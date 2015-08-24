@@ -12,17 +12,17 @@
         <p>FEATURED TOOLS</p>
         <ul class="bxslider">
             <li>
-                <a href="http://hq-ict-09440v:8080/CorVu/g?IncidentAnalysisTool_Live" target="_self">
-                    <img src="Images/iat.png" border="0"/></a></li>
+               <asp:LinkButton ID="IAT" runat="server" OnClick="IAT_OnClick">Incident Analysis Tool
+                    <img src="Images/iat.png" border="0"/></asp:LinkButton></li>
             <li>
-                <a href="http://hq-ict-09440v:8080/CorVu/g?KPIFramework" target="_self">
-                    <img src="Images/kpiframework.png" border="0"/></a></li>
+                <asp:LinkButton ID="Framework" runat="server" OnClick="Framework_OnClick">Incident KPI Framework
+                    <img src="Images/kpiframework.png" border="0"/></asp:LinkButton></li>
             <li>
-                <a href="http://hq-ict-09440v:8080/CorVu/g?KPITool" target="_self">
-                    <img src="Images/kpitool.png" border="0" /></a></li>
+              <asp:LinkButton ID="IKPI" runat="server" OnClick="IKPI_OnClick">Incident KPI Tool
+                    <img src="Images/kpitool.png" border="0" /></asp:LinkButton></li>
             <li>
-                <a href="http://hq-ict-09440v:8080/CorVu/g?KPI_New_Dev" target="_self">
-                    <img src="Images/corpsc.png" border="0" /></a></li>
+                <asp:LinkButton ID="KPIScore" runat="server" OnClick="KPIScore_OnClick">Corporate KPI Scorecards
+                    <img src="Images/corpsc.png" border="0" /></asp:LinkButton></li>
             
         </ul>
     </div>
