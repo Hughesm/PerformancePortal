@@ -45,7 +45,7 @@
                              <li><asp:LinkButton ID="QueryTool" runat="server" OnClick="QueryTool_OnClick">Incident Query Tool</asp:LinkButton></li>
                              <li><asp:LinkButton ID="KPIScore" runat="server" OnClick="KPIScore_OnClick">Corporate KPI Scorecards</asp:LinkButton></li>
                              <li><asp:LinkButton ID="StationScore" runat="server" OnClick="StationScore_OnClick">Station Scorecard</asp:LinkButton></li>
-                             <li><asp:LinkButton ID="Mos" runat="server" OnClick="Mos_OnClick">MOS(Dev)</asp:LinkButton></li>
+                             <li><asp:LinkButton ID="Mos" runat="server" OnClick="Mos_OnClick">MOS</asp:LinkButton></li>
                            </ul>
 
                     </li>
