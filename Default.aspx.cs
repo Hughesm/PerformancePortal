@@ -167,5 +167,39 @@ public partial class _Default : System.Web.UI.Page
         lblBody.Visible = false;
     }
 
+    protected void IAT_OnClick(object sender, EventArgs e)
+    {
+        WinAuth.AddArea(WindowsAuthentication.PerformancePortal.Iat);
+
+
+        WinAuth.TrackerSql();
+
+        Response.Redirect("http://hq-ict-09440v:8080/CorVu/g?IncidentAnalysisTool_Live");
+
+
+    }
+    protected void Framework_OnClick(object sender, EventArgs e)
+    {
+        WinAuth.AddArea((WindowsAuthentication.PerformancePortal.Framework));
+        WinAuth.TrackerSql();
+        Response.Redirect("http://hq-ict-09440v:8080/CorVu/g?KPIFramework");
+    }
+    protected void IKPI_OnClick(object sender, EventArgs e)
+    {
+        WinAuth.AddArea((WindowsAuthentication.PerformancePortal.Kpi));
+
+
+        WinAuth.TrackerSql();
+
+        Response.Redirect("http://hq-ict-09440v:8080/CorVu/g?KPITool");
+
+    }
+    protected void KPIScore_OnClick(object sender, EventArgs e)
+    {
+        WinAuth.AddArea((WindowsAuthentication.PerformancePortal.Ckpi));
+        WinAuth.TrackerSql();
+        Response.Redirect("http://hq-ict-09440v:8080/CorVu/g?KPI_New_Dev");
+    }
+
 
 }
