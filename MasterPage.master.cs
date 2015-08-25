@@ -86,8 +86,8 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
     protected void Mos_OnClick(object sender, EventArgs e)
     {
-        //WinAuth.AddArea((WindowsAuthentication.PerformancePortal.Mos));
-        //WinAuth.TrackerSql();
+        WinAuth.AddArea((WindowsAuthentication.PerformancePortal.Mos));
+        WinAuth.TrackerSql();
         Response.Redirect("http://hq-ict-09440v:8080/CorVu3/go?MOS");
     }
 
