@@ -74,7 +74,8 @@ public class WindowsAuthentication : IWindowsAuth
 
     public void TrackerSql()
     {
-        try {
+        try
+        {
             foreach (var area in _Areas)
             {
                 switch (area) //add new enum here
@@ -128,13 +129,13 @@ public class WindowsAuthentication : IWindowsAuth
                 selectQuery.SelectColumns("Name", "Department", "[Rank]");
                 selectQuery.SelectFromTable("OrganisationalStructure");
 
-                if(UserName.Length < 5)
+                if (UserName.Length < 5)
                 {
                     selectQuery.AddWhere("[Login]", Comparison.Equals, @"GMFS\Hughesm");
                 }
                 else
                 {
-                selectQuery.AddWhere("[Login]", Comparison.Equals, UserName);
+                    selectQuery.AddWhere("[Login]", Comparison.Equals, UserName);
                 }
 
                 Selectstatement = selectQuery.BuildQuery();
@@ -161,11 +162,11 @@ public class WindowsAuthentication : IWindowsAuth
                 InsertQuery.Query(INSERTstatement, SqlConnect);
             }
         }
-            catch(Exception exec)
+        catch (Exception exec)
         {
-                Console.WriteLine(exec);
-            }
-                }
+            Console.WriteLine(exec);
+        }
+    }
 
 
 
