@@ -16,9 +16,9 @@ using PropertyCollection = System.DirectoryServices.PropertyCollection;
 ///                                                                       - WinAuth.TrackerSql(); 
 interface IWindowsAuth
 {
-   string UserName { get; set; }
-   string FullName { get; set; }
-   string AreaChosen { get; set; }
+    string UserName { get; set; }
+    string FullName { get; set; }
+    string AreaChosen { get; set; }
 
     string GetFullName();
     string GetUsername();
@@ -50,110 +50,125 @@ public class WindowsAuthentication : IWindowsAuth
     public string UserName { get; set; }
     public string FullName { get; set; }
     public string AreaChosen { get; set; }
-   
+
     protected List<PerformancePortal> _Areas = new List<PerformancePortal>();
-    
+
     public string ActivDirName
     {
-        set 
+        set
         {
             ActiveDName = value;
-        } 
-       get { return ActiveDName; }
-           
+        }
+        get { return ActiveDName; }
+
     }
 
     public void AddArea(PerformancePortal newArea)
     {
         _Areas.Add(newArea);
     }
-    
+
     /// <summary>
     /// TrackerSql Method: This method will track a user and comit it to the datalayer.
     /// </summary>
 
     public void TrackerSql()
     {
-
-      foreach (var area in _Areas)
+        try
         {
-            switch (area) //add new enum here
+            foreach (var area in _Areas)
             {
-                case PerformancePortal.Mos:
-                    AreaChosen = "MOS";
-                    break;
-                case PerformancePortal.Ckpi:
-                    AreaChosen = "Corporate KPI Scorecards";
-                    break;
-                case PerformancePortal.Framework:
-                    AreaChosen = "Incident KPI Framework";
-                    break;
-                case PerformancePortal.Iat:
-                    AreaChosen = "Incident Analysis Tool";
-                    break;
-                case PerformancePortal.Ibt:
-                    AreaChosen = "Internal Benchmarking Tool";
-                    break;
-                case PerformancePortal.Iqt:
-                    AreaChosen = "Incident Query Tool";
-                    break;
-                case PerformancePortal.Kpi:
-                    AreaChosen = "Incident KPI Tool";
-                    break;
-                case PerformancePortal.Qrt:
-                    AreaChosen = "Quarterly Reporting Tool";
-                    break;
-                case PerformancePortal.Ss:
-                    AreaChosen = "Station Scorecard";
-                    break;
-                case PerformancePortal.Portal:
-                    AreaChosen = "Performance Portal";
-                    break;
-                case PerformancePortal.Er:
-                    AreaChosen = "Emergency Reponse";
-                    break;
+                switch (area) //add new enum here
+                {
+                    case PerformancePortal.Mos:
+                        AreaChosen = "MOS";
+                        break;
+                    case PerformancePortal.Ckpi:
+                        AreaChosen = "Corporate KPI Scorecards";
+                        break;
+                    case PerformancePortal.Framework:
+                        AreaChosen = "Incident KPI Framework";
+                        break;
+                    case PerformancePortal.Iat:
+                        AreaChosen = "Incident Analysis Tool";
+                        break;
+                    case PerformancePortal.Ibt:
+                        AreaChosen = "Internal Benchmarking Tool";
+                        break;
+                    case PerformancePortal.Iqt:
+                        AreaChosen = "Incident Query Tool";
+                        break;
+                    case PerformancePortal.Kpi:
+                        AreaChosen = "Incident KPI Tool";
+                        break;
+                    case PerformancePortal.Qrt:
+                        AreaChosen = "Quarterly Reporting Tool";
+                        break;
+                    case PerformancePortal.Ss:
+                        AreaChosen = "Station Scorecard";
+                        break;
+                    case PerformancePortal.Portal:
+                        AreaChosen = "Performance Portal";
+                        break;
+                    case PerformancePortal.Er:
+                        AreaChosen = "Emergency Reponse";
+                        break;
+                }
+
+                string INSERTstatement;
+                string Selectstatement;
+                DataSet TrackerDataSet;
+                string strSQLconnection;
+                SQLConnection ConnectToDataBase = new SQLConnection();
+                SQLConnection InsertQuery = new SQLConnection();
+                strSQLconnection = SqlConnect;
+
+                InsertQueryBuilder insertQuery = new InsertQueryBuilder();
+                SelectQueryBuilder selectQuery = new SelectQueryBuilder();
+                //create select statement
+                selectQuery.SelectColumns("Name", "Department", "[Rank]");
+                selectQuery.SelectFromTable("OrganisationalStructure");
+
+                if (UserName.Length < 5)
+                {
+                    selectQuery.AddWhere("[Login]", Comparison.Equals, @"GMFS\Hughesm");
+                }
+                else
+                {
+                    selectQuery.AddWhere("[Login]", Comparison.Equals, UserName);
+                }
+
+                Selectstatement = selectQuery.BuildQuery();
+                //retrieve select statement dataset
+                ConnectToDataBase.connection_string = strSQLconnection;
+                ConnectToDataBase.Sql = Selectstatement;
+                TrackerDataSet = ConnectToDataBase.GetConnection;
+                //get data from dataset table
+                var name = TrackerDataSet.Tables[0].Rows[0]["Name"].ToString();
+                var department = TrackerDataSet.Tables[0].Rows[0]["Department"].ToString();
+                var rank = TrackerDataSet.Tables[0].Rows[0]["Rank"].ToString();
+                //create insert statmement
+                insertQuery.Table = "PerfPortal_Tracker";
+                insertQuery.SetField("LoginName", UserName);
+                insertQuery.SetField("FullName", name);
+                insertQuery.SetField("Department", department);
+                insertQuery.SetField("JobTitle", rank);
+                insertQuery.SetField("[DateTime]", DateTime.Now.ToString(CultureInfo.InvariantCulture));
+                insertQuery.SetField("AreaAccessed", AreaChosen);
+
+                INSERTstatement = insertQuery.BuildQuery();
+                //send sql statement to server
+
+                InsertQuery.Query(INSERTstatement, SqlConnect);
             }
-
-            string INSERTstatement;
-            string Selectstatement;
-            DataSet TrackerDataSet;
-            string strSQLconnection;
-            SQLConnection ConnectToDataBase = new SQLConnection();
-            SQLConnection InsertQuery = new SQLConnection();
-            strSQLconnection = SqlConnect;
-
-            InsertQueryBuilder insertQuery = new InsertQueryBuilder();
-            SelectQueryBuilder selectQuery = new SelectQueryBuilder();
-            //create select statement
-            selectQuery.SelectColumns("Name", "Department", "[Rank]");
-            selectQuery.SelectFromTable("OrganisationalStructure");
-            selectQuery.AddWhere("[Login]", Comparison.Equals, UserName);
-
-            Selectstatement = selectQuery.BuildQuery();
-            //retrieve select statement dataset
-            ConnectToDataBase.connection_string = strSQLconnection;
-            ConnectToDataBase.Sql = Selectstatement;
-            TrackerDataSet = ConnectToDataBase.GetConnection;
-            //get data from dataset table
-            var name = TrackerDataSet.Tables[0].Rows[0]["Name"].ToString();
-            var department = TrackerDataSet.Tables[0].Rows[0]["Department"].ToString();
-            var rank = TrackerDataSet.Tables[0].Rows[0]["Rank"].ToString();
-            //create insert statmement
-            insertQuery.Table = "PerfPortal_Tracker";
-            insertQuery.SetField("LoginName", UserName);
-            insertQuery.SetField("FullName", name);
-            insertQuery.SetField("Department", department);
-            insertQuery.SetField("JobTitle", rank);
-            insertQuery.SetField("[DateTime]", DateTime.Now.ToString(CultureInfo.InvariantCulture));
-            insertQuery.SetField("AreaAccessed", AreaChosen);
-
-            INSERTstatement = insertQuery.BuildQuery();
-            //send sql statement to server
-
-            InsertQuery.Query(INSERTstatement, SqlConnect);
         }
-        
+        catch (Exception exec)
+        {
+            Console.WriteLine(exec);
+        }
     }
+
+
 
     /// <summary>
     /// GetFullName Method: Uses the user login name to get the full name of user by interrogating active directory. Uses active directory name.
@@ -161,14 +176,14 @@ public class WindowsAuthentication : IWindowsAuth
 
     public string GetFullName()
     {
-       
+
         string str;
         string strDomain;
         string strName;
 
         if (string.IsNullOrEmpty(ActiveDName))
         {
-            ActiveDName = @"GMFS\hughesm";
+            ActiveDName = @"GMFS\redmondp";
         }
 
         // Parse the string to check if domain name is present.
@@ -197,20 +212,22 @@ public class WindowsAuthentication : IWindowsAuth
             object obVal = coll["FullName"].Value;
 
             str = obVal.ToString();
-            
+
+
+            //below rearranges the name from [last][first] to [first][last]
+            string[] Name = str.Split(new char[0]);
+
+            foreach (string order in Name)
+            {
+                str = Name[1];
+                //+" " + Name[0];
+            }
+
         }
         catch (Exception ex)
         {
             str = ex.Message;
         }
-        //below rearranges the name from [last][first] to [first][last]
-        string[] Name = str.Split(new char[0]);
-        foreach (string order in Name)
-        {
-            str = Name[1];
-            //+" " + Name[0];
-        }
-
 
         return str;
     }
@@ -219,13 +236,13 @@ public class WindowsAuthentication : IWindowsAuth
     /// Username Method: Strips the GMFS section of the active directory name from the string. Uses active directory name.
     /// </summary>
     /// 
-   
+
     public string GetUsername()
     {
-        
+
         ActiveDName = new string((from c in ActiveDName
-            where char.IsWhiteSpace(c) || char.IsLetterOrDigit(c)
-            select c
+                                  where char.IsWhiteSpace(c) || char.IsLetterOrDigit(c)
+                                  select c
             ).ToArray());
 
         {
@@ -235,7 +252,7 @@ public class WindowsAuthentication : IWindowsAuth
             }
             else
             {
-               ActiveDName = ActiveDName.Remove(0, 4);
+                ActiveDName = ActiveDName.Remove(0, 4);
             }
 
             return ActiveDName;
@@ -244,7 +261,7 @@ public class WindowsAuthentication : IWindowsAuth
 
 
 
-  
+
 
 
 }
