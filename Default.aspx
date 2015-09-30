@@ -98,11 +98,11 @@
                 <asp:ListItem Text="Select a User" Value="0" />
                 <asp:ListItem Text="Deakin, Mark" Value="1" />
                 <asp:ListItem Text="Hughes, Michael" Value="2" />
-                <asp:ListItem Text="Leech, Christopher" Value="3" />
-                <asp:ListItem Text="Lewcock, Denise" Value="4" />
-                <asp:ListItem Text="Nuttall, Tracey" Value="5" />
-                <asp:ListItem Text="Ryan, Joanne" Value="6" />
-                <asp:ListItem Text="Redmond, Paul" Value="7" />
+                <asp:ListItem Text="Lewcock, Denise" Value="3" />
+                 <asp:ListItem Text="Ryan, Joanne" Value="4" />
+                <asp:ListItem Text="Redmond, Paul" Value="5" />
+                <asp:ListItem Text="Kershaw, Maria" Value="6" />
+                <asp:ListItem Text="Pennington, Chloe" Value="7" />
             </asp:DropDownList>
             <asp:DropDownList ID="ddlType" runat="server" CssClass="Text">
                 <asp:ListItem Text="Select a Type" Value="0" />
